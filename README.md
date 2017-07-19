@@ -16,9 +16,9 @@ just install Kafka and use the cli is also nice.
 The documentation lives in the source so that Ansible can use it, 
 but one example:
 
-kafka_topics:
-  hosts: 'zookeeper.dev:2181'
-  command: list
+    kafka_topics:
+      hosts: 'zookeeper.dev:2181'
+      command: list
 
 will list all topics in the Kafka cluster using that ZooKeeper instance.
 
