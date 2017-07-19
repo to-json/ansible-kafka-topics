@@ -4,7 +4,7 @@ import json
 
 DOCUMENTATION = """
 ---
-module: kafka
+module: kafka_topics
 short_description: list, describe, and check the sync status of Kafka topics
 options:
     hosts:
@@ -32,41 +32,41 @@ author: "Jason Saxon(@to-json)"
 
 EXAMPLES = """
 # List all topics in a kafka cluster
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: list
 
 # get the topic description data for all topics in a kafka cluster
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: describe
 
 # get the topic description data for 2 specific topics in a kafka cluster
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: describe
     topics: ['topic', 'another_one']
 
 # check if all topics have the expected number of in sync replicas
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: in_sync
 
 # check if 2 specific topics have the expected number of in sync replicas
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: in_sync
     topics: ['topic', 'another_one']
 
 # check if all topics have the expected number of in sync replicas and
 # retrieve data about topics with replicas that are out of sync
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: in_sync_verbose
 
 # check if 2 specific topics have the expected number of in sync replicas and
 # retrieve data about topics with replicas that are out of sync
-- kafka:
+- kafka_topics:
     hosts: 'localhost:2181'
     command: in_sync_verbose
     topics: ['topic', 'another_one']

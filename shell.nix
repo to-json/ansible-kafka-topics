@@ -6,6 +6,6 @@ stdenv.mkDerivation rec {
     python27Packages.kazoo
     python27Packages.pytest
     python27Packages.ansible
-    # python27Packages.ipython
+    python27Packages.ipython
   ];
 }

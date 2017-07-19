@@ -1,7 +1,6 @@
 import pytest
-from kafka import KafkaUtil
+from kafka_topics import KafkaUtil
 from kazoo.exceptions import NoNodeError
-# from kazoo.protocol.states import ZnodeStat
 
 
 def with_separator(path):
@@ -60,12 +59,14 @@ class MockZKClient:
             raise NoNodeError((), {})
 
     def get_children(self, path):
+        def subdirectory_count(stored_path, path):
+            return len(stored_path.rstrip('/').split(path)[1].split('/')) - 1
         path = with_separator(path)
         return [key.split(path)[1].split('/')[0]
                 for key in self.data.keys()
                 if key != path and
                 key.startswith(path) and
-                len(key.rstrip('/').split(path)[1].split('/')) == 1]
+                subdirectory_count(key, path) == 0]
 
     def exists(self, path):
         return bool(self.data.get(with_separator(path), None))
@@ -380,13 +381,12 @@ def test_in_sync_dirty_cluster(dirty_cluster):
 def test_in_sync_verbose_dirty_cluster(dirty_cluster):
     with dirty_cluster as k:
         out = k.in_sync_verbose()
-        expected = {
-            "in_sync": False,
-                     'sync_data':
-                     {'another_one': {'in_sync': False,
-                                      'out_of_sync_replicas': {u'1': [1001]}},
-                      'topic': {'in_sync': False,
-                                'out_of_sync_replicas': {u'0': [1001]}}},
+        expected = {"in_sync": False,
+                    'sync_data':
+                    {'another_one': {'in_sync': False,
+                                     'out_of_sync_replicas': {u'1': [1001]}},
+                     'topic': {'in_sync': False,
+                               'out_of_sync_replicas': {u'0': [1001]}}},
                     "msg": "Some topics are out of sync"}
         assert(out == expected)
 
